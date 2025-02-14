@@ -21,7 +21,7 @@ Ensure you have **Node.js** and **MongoDB** installed on your system.
 
 ### 🔹 Clone Repository
 ```sh
-$ git clone https://github.com/your-username/library-management-system.git
+$ git clone https://github.com/hariomsingh2004/library-management-system.git
 $ cd library-management-system
 ```
 
