@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Canceled</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Transaction Canceled</h1>
+    </header>
+    <main>
+        <p>Your transaction has been canceled.</p>
+        <a href="/transactions.html">Back to Transactions</a>
+        <a href="/admin_home.html">Admin Home</a>
+    </main>
+    <footer>
+        <p>Library Management System</p>
+    </footer>
+    <script> document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("transactionCancelForm");
+    
+        if (form) {
+            form.addEventListener("submit", async (event) => {
+                event.preventDefault();
+    
+                const transactionId = document.getElementById("transactionId").value;
+                const reason = document.getElementById("reason").value;
+    
+                const response = await fetch("http://localhost:5000/cancel-transaction", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ transactionId, reason }),
+                });
+    
+                const result = await response.json();
+                alert(result.message);
+            });
+        }
+    });
+    </script>
+</body>
+</html>

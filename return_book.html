@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Book</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Return Book</h1>
+    </header>
+    <nav>
+        <ul style="text-align: center;
+    font-size: 1.2rem;">
+            <li><a href="/transactions.html">Back to Transactions</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    <form id="returnBookForm">
+        <label for="bookName">Book Name:</label>
+        <input type="text" id="bookName" name="bookName" required>
+        <label for="authorName">Author Name:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        <label for="serialNo">Serial Number:</label>
+        <input type="text" id="serialNo" name="serialNo" required>
+        <label for="issueDate">Issue Date:</label>
+        <input type="date" id="issueDate" name="issueDate" required>
+        <label for="returnDate">Return Date:</label>
+        <input type="date" id="returnDate" name="returnDate" required>
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks" name="remarks"></textarea>
+        <button type="submit">Return Book</button>
+        <button type="button" onclick="window.location.href='cancel.html'">Cancel</button>
+    </form>
+    <script> 
+        document.getElementById("returnBookForm").addEventListener("submit", async function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Collect form data
+    const formData = {
+        bookName: document.getElementById("bookName").value,
+        authorName: document.getElementById("authorName").value,
+        serialNo: document.getElementById("serialNo").value,
+        issueDate: document.getElementById("issueDate").value,
+        returnDate: document.getElementById("returnDate").value,
+        remarks: document.getElementById("remarks").value
+    };
+
+    try {
+        // Send data to the backend
+        const response = await fetch("http://localhost:5000/return-book", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+        alert(result.message); // Show success/error message
+    } catch (error) {
+        console.error("❌ Error returning book:", error);
+        alert("❌ Failed to return book.");
+    }
+});
+
+    </script>
+</body>
+</html>

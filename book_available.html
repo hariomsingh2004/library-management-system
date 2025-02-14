@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Availability</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Book Availability</h1>
+    </header>
+    <nav style="text-align: center; font-size: 1.2rem;">
+        <ul>
+            <li><a href="/transactions.html">Back to Transactions</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    
+    <form id="bookAvailabilityForm">
+        <label for="bookName">Enter Book Name:</label>
+        <input type="text" id="bookName" name="bookName" required>
+        
+        <label for="authorName">Enter Author Name:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="searchResults"></div>
+
+    <script>
+        document.getElementById("bookAvailabilityForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent page reload
+
+            const bookData = {
+                bookName: document.getElementById("bookName").value,
+                authorName: document.getElementById("authorName").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/check-book", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bookData)
+                });
+
+                const result = await response.json();
+                const searchResults = document.getElementById("searchResults");
+
+                if (result.available) {
+                    searchResults.innerHTML = `<p> Book Available (Quantity: ${result.quantity})</p>`;
+                } else {
+                    searchResults.innerHTML = `<p>Book Not Available</p>`;
+                }
+            } catch (error) {
+                alert("❌ Error checking book availability!");
+            }
+        });
+    </script>
+</body>
+</html>

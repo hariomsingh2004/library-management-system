@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Book</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Issue Book</h1>
+    </header>
+    <nav style="text-align: center;
+    font-size: 1.2rem;">
+        <ul>
+            <li><a href="/transactions.html">Back to Transactions</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    <form id="bookIssueForm">
+        <label for="bookName">Book Name:</label>
+        <input type="text" id="bookName" name="bookName" required>
+        <label for="authorName">Author Name:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        <label for="issueDate">Issue Date:</label>
+        <input type="date" id="issueDate" name="issueDate" required>
+        <label for="returnDate">Return Date:</label>
+        <input type="date" id="returnDate" name="returnDate" required>
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks" name="remarks"></textarea>
+        <button type="submit">Issue Book</button>
+    </form>
+    <script>
+        document.getElementById("bookIssueForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const bookName = document.getElementById("bookName").value;
+    const authorName = document.getElementById("authorName").value;
+    const issueDate = document.getElementById("issueDate").value;
+    const returnDate = document.getElementById("returnDate").value;
+    const remarks = document.getElementById("remarks").value;
+
+    const bookData = { bookName, authorName, issueDate, returnDate, remarks };
+
+    try {
+        const response = await fetch("http://localhost:5000/issue-book", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookData)
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        document.getElementById("bookIssueForm").reset();
+    } catch (error) {
+        console.error("❌ Error issuing book:", error);
+        alert("Error issuing book. Please try again.");
+    }
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Membership</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Update Membership</h1>
+    </header>
+    <nav style="text-align: center; font-size: 1.2rem;">
+        <ul>
+            <li><a href="/maintenance.html">Back to Maintenance</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    
+    <form id="updateMembershipForm">
+        <label for="membershipId">Membership ID:</label>
+        <input type="text" id="membershipId" name="membershipId" required>
+        
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate">
+        
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate">
+        
+        <label for="membershipType">Membership Type:</label>
+        <select id="membershipType" name="membershipType">
+            <option value="">--Select Type--</option>
+            <option value="6 months">6 Months</option>
+            <option value="1 year">1 Year</option>
+            <option value="2 years">2 Years</option>
+        </select>
+        
+        <label for="removeMembership">Remove Membership:</label>
+        <input type="checkbox" id="removeMembership" name="removeMembership">
+        
+        <button type="submit">Update Membership</button>
+    </form>
+
+    <script>
+        document.getElementById("updateMembershipForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const membershipId = document.getElementById("membershipId").value;
+            const startDate = document.getElementById("startDate").value;
+            const endDate = document.getElementById("endDate").value;
+            const membershipType = document.getElementById("membershipType").value;
+            const removeMembership = document.getElementById("removeMembership").checked;
+
+            const url = removeMembership ? "/delete-membership" : "/update-membership";
+            const method = removeMembership ? "DELETE" : "PUT";
+
+            const response = await fetch(url, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ membershipId, startDate, endDate, membershipType })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+
+</body>
+</html>

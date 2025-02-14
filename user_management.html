@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>User Management</h1>
+    </header>
+    <nav style="text-align: center; font-size: 1.2rem;">
+        <ul>
+            <li><a href="/maintenance.html">Back to Maintenance</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    <form id="userManagementForm">
+        <label for="userType">User Type:</label>
+        <select id="userType" name="userType" required>
+            <option value="new">New User</option>
+            <option value="existing">Existing User</option>
+        </select>
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" name="userName" required>
+        <label for="status">Status:</label>
+        <input type="checkbox" id="status" name="status"> Active
+        <label for="admin">Admin:</label>
+        <input type="checkbox" id="admin" name="admin"> Admin
+        <button type="submit">Save</button>
+    </form>
+    <script> document.getElementById("userManagementForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+    
+        // Collect form data
+        const userData = {
+            userType: document.getElementById("userType").value,
+            userName: document.getElementById("userName").value,
+            status: document.getElementById("status").checked,
+            admin: document.getElementById("admin").checked
+        };
+    
+        try {
+            const response = await fetch("http://localhost:5000/add-user", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            });
+    
+            const result = await response.json();
+            alert(result.message); // Show success or error message
+            document.getElementById("userManagementForm").reset(); // Reset form
+        } catch (error) {
+            alert("❌ Error adding user. Please try again.");
+        }
+    });
+    </script>
+</body>
+</html>

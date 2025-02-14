@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Add Book</h1>
+    </header>
+    <nav style="text-align: center; font-size: 1.2rem;">
+        <ul>
+            <li><a href="/maintenance.html">Back to Maintenance</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    
+    <form id="addBookForm">
+        <label for="bookName">Book Name:</label>
+        <input type="text" id="bookName" name="bookName" required>
+        
+        <label for="authorName">Author Name:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+        
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" required>
+        
+        <button type="submit">Add Book</button>
+    </form>
+
+    <script>
+        document.getElementById("addBookForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent page reload
+
+            const bookData = {
+                bookName: document.getElementById("bookName").value,
+                authorName: document.getElementById("authorName").value,
+                category: document.getElementById("category").value,
+                quantity: document.getElementById("quantity").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/add-book", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bookData)
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                document.getElementById("addBookForm").reset(); // Reset form after submission
+            } catch (error) {
+                alert("Error adding book!");
+            }
+        });
+    </script>
+</body>
+</html>

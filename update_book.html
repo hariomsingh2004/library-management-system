@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Update Book</h1>
+    </header>
+    <nav style="text-align: center;
+    font-size: 1.2rem;">
+        <ul>
+            <li><a href="/maintenance.html">Back to Maintenance</a></li>
+            <li><a href="/admin_home.html">Admin Home</a></li>
+        </ul>
+    </nav>
+    <form id="updateBookForm">
+        <label for="bookName">Book Name:</label>
+        <input type="text" id="bookName" name="bookName" required>
+        <label for="authorName">Author Name:</label>
+        <input type="text" id="authorName" name="authorName" required>
+        <label for="serialNo">Serial Number:</label>
+        <input type="text" id="serialNo" name="serialNo" required>
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+        </select>
+        <button type="submit">Update Book</button>
+    </form>
+    <script> document.getElementById("updateBookForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+    
+        const bookData = {
+            bookName: document.getElementById("bookName").value,
+            authorName: document.getElementById("authorName").value,
+            serialNo: document.getElementById("serialNo").value,
+            status: document.getElementById("status").value
+        };
+    
+        try {
+            const response = await fetch("http://localhost:5000/update-book", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(bookData)
+            });
+    
+            const result = await response.json();
+            alert(result.message);
+        } catch (error) {
+            console.error("Error updating book:", error);
+            alert("❌ Failed to update book");
+        }
+    });
+    </script>
+</body>
+</html>
